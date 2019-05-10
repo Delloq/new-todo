@@ -20,19 +20,38 @@ class TodoApp extends Component {
         }
 
         this.addNewItem = this.addNewItem.bind(this)
+        this.idGenerator = this.idGenerator.bind(this)
     }
 
-    addNewItem() {
+    idGenerator() {
+        const min = 1;
+        const max = 100;
+        const rand = min + Math.random() * (max - min);
+        alert(rand);
+        return (
+            rand
+        )
+    }
+
+
+    addNewItem(text) {
+        const newItem = {
+            id: this.idGenerator(),
+            content: text,
+        }
+
+        this.setState({
+            todos:[...this.state.todos, newItem],
+        })
         
     }
 
     render() {
         return(
             <div className='TodoApp'>
-                <TodoHeader onNewItem = {(item) => this.addNewItem()}/>
+                <TodoHeader onNewItem = {this.addNewItem}/>
                 <TodoList items={this.state.todos}/>
-                <button onClick={this.addNewItem()}></button>
-            </div>
+            </div>            
         )
     }
 }

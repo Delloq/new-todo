@@ -7,7 +7,7 @@ class TodoList extends Component {
             <div className='TodoList'>
                 <ul>
                     {this.props.items.map(item => (
-                        <li>{item.content}</li>
+                        <li key={item.id}>{item.content}</li>
                     ))}
                 </ul>
             </div>

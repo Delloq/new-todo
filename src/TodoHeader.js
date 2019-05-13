@@ -16,14 +16,13 @@ class TodoHeader extends Component {
 
     handleSubmit(event) {
         if(this.state.text === '') {
-            event.preventDefault();
+            event.preventDefault()
             return
         }
 
         this.props.onNewItem(this.state.text)
         this.setState({text: ''})
         event.preventDefault()
-
     }
 
     render() {
@@ -31,7 +30,7 @@ class TodoHeader extends Component {
             <div className='TodoHeader'>
                 <form onSubmit={this.handleSubmit}>
                     <input onChange={this.handleChange} value={this.state.text}/>
-                    <input type="submit" value="Add Task"/>
+                    <input type="submit" value="Add Task" />
                 </form>
             </div>
             

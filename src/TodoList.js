@@ -7,7 +7,10 @@ class TodoList extends Component {
             <div className='TodoList'>
                 <ul>
                     {this.props.items.map(item => (
-                        <li key={item.id}>{item.content}</li>
+                        <li key={item.id}>
+                            {item.content}
+                            <button onClick={ () => this.props.onDeleteItem(item)}>Delete</button>
+                        </li>
                     ))}
                 </ul>
             </div>

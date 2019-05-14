@@ -4,25 +4,25 @@ class TodoHeader extends Component {
 
     constructor() {
         super()
-        this.state = {text:''}
+        this.state = {text:''};
 
-        this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     
     handleChange(event) {
-        this.setState({text: event.target.value})
+        this.setState({text: event.target.value});
     }
 
     handleSubmit(event) {
         if(this.state.text === '') {
-            event.preventDefault()
-            return
+            event.preventDefault();
+            return;
         }
 
-        this.props.onNewItem(this.state.text)
-        this.setState({text: ''})
-        event.preventDefault()
+        this.props.onNewItem(this.state.text);
+        this.setState({text: ''});
+        event.preventDefault();
     }
 
     render() {
@@ -33,7 +33,6 @@ class TodoHeader extends Component {
                     <input type="submit" value="Add Task" />
                 </form>
             </div>
-            
         )
     }
 }

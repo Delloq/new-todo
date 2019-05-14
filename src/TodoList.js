@@ -1,4 +1,5 @@
 import React,{Component} from 'react'
+import TodoListItem from './TodoListItem'
 
 class TodoList extends Component {
 
@@ -6,12 +7,7 @@ class TodoList extends Component {
         return(
             <div className='TodoList'>
                 <ul>
-                    {this.props.items.map(item => (
-                        <li key={item.id}>
-                            {item.content}
-                            <button onClick={ () => this.props.onDeleteItem(item)}>Delete</button>
-                        </li>
-                    ))}
+                    {this.props.items.map(item => <TodoListItem id={item.id} item={item} onDeleteItem={() => this.props.onDeleteItem(item)} />)}
                 </ul>
             </div>
         )

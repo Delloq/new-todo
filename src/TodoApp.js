@@ -2,6 +2,35 @@ import React,{Component} from 'react'
 import TodoHeader from './TodoHeader';
 import TodoList from './TodoList'
 
+const styles = {
+    
+    appContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+
+    wrapper: {
+        marginTop: '50px',
+        flex: '0 0 800px',
+        backgroundColor: '#eee',
+        borderRadius: '15px',    
+    },
+
+    countContainer: {
+        display: 'flex',
+        justifyContent: 'space-around',
+    },
+
+    counteItem: {
+        fontSize: '12px',
+        fontFamily: 'Monospace',
+        fontWeight: 'bold',
+        borderBottom: '1px solid black'
+    },
+
+}
+
 class TodoApp extends Component {
 
     constructor() {
@@ -9,20 +38,22 @@ class TodoApp extends Component {
         this.state = {
             todos: [
                 {
-                    id:0,
+                    id:this.idGenerator(),
                     content:'Something!',
-                    cheked: true
+                    checked: true
                 },
                 {
-                    id:1,
+                    id:this.idGenerator(),
                     content:'Drink coffe!',
-                    cheked:'false'
+                    checked:false
                 }
             ]
         };
 
         this.addNewItem = this.addNewItem.bind(this);
         this.removeItem = this.removeItem.bind(this);
+        this.checkedItem = this.checkedItem.bind(this);
+        this.deleteCheckedItems = this.deleteCheckedItems.bind(this);
     }
 
     idGenerator() {
@@ -36,28 +67,64 @@ class TodoApp extends Component {
         const newItem = {
             id: this.idGenerator(),
             content: text,
+            checked: false
         };
 
         this.setState({
-            todos:[...this.state.todos, newItem],
+            todos:[newItem, ...this.state.todos],
         });
+        return newItem
     }
 
     removeItem(item) {
-        const delTodos = [...this.state.todos]
-        const delItem = delTodos.indexOf(item);
-        delTodos.splice(delItem,1);
+        const { todos } = this.state;
+
         this.setState({
-            todos: delTodos
+            todos: todos.filter(next => next.id !== item.id)
         });
     }
 
+    checkedItem(item, value) {
+        const newItem = { ...item, checked: value };
+        const { todos } = this.state;
+        console.log(newItem);
+
+        this.setState({ 
+            todos: todos.map(next => next.id === newItem.id ? newItem : next) 
+        });
+    }
+
+    deleteCheckedItems() {
+        const {todos} = this.state;
+        this.setState({
+            todos: todos.filter(next => next.checked === false)
+        })        
+    }
+
     render() {
+
+        const {todos} = this.state;
+        const chechedCount = todos.filter(next => next.checked === true); 
+
+        const allTask = this.state.todos.length;
+        const checkTask = chechedCount.length;
+        const noCheckTask = allTask - checkTask;
+
         return(
-            <div className='TodoApp'>
-                <TodoHeader onNewItem = {this.addNewItem}/>
-                <TodoList items={this.state.todos} onDeleteItem={this.removeItem}/>
-            </div>            
+            <div style={styles.appContainer}>
+                <div style={styles.wrapper}>
+                    <TodoHeader onNewItem = {this.addNewItem} deleteItem={this.deleteCheckedItems}/>
+                    <TodoList items={this.state.todos} 
+                        onDeleteItem={this.removeItem}
+                        onCheckedItem={this.checkedItem} />
+
+                    <div style={styles.countContainer}>
+                        <p style={styles.counteItem}>All task: {allTask}</p>
+                        <p style={styles.counteItem}>Completed tasks: {checkTask}</p>
+                        <p style={styles.counteItem}>Outstanding tasks: {noCheckTask}</p>
+                    </div>
+                </div>            
+            </div>
         )
     }
 }

@@ -24,7 +24,7 @@ class TodoListItem extends Component {
    render() {
        const item = this.props.item;
         return (
-            <li style={styles.itemСontainer} className='item'>
+            <ul style={styles.itemСontainer} className='item'>
                 <Checkbox type='checkbox' 
                     checked={item.checked}
                     onChange={(event) => this.props.onCheckedItem(item, event.target.checked)}
@@ -34,7 +34,9 @@ class TodoListItem extends Component {
                     <span style={styles.a}>{item.content}</span>
                 }
                 <Button  rightIcon='delete' intent='danger' text='Delete' onClick={() => this.props.onDeleteItem(item)}/>
-            </li>
+                <Button rightIcon='eraser' onClick={() => this.props.onTaskEditing(item)}/>
+                <Button onClick={this.props.onAddSubItem}/>
+            </ul>
         ) 
     }
     

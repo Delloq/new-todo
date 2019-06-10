@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import TodoHeader from './TodoHeader';
 import TodoList from './TodoList'
+import SubList from './SubList'
 
 const styles = {
     
@@ -47,13 +48,20 @@ class TodoApp extends Component {
                     content:'Drink coffe!',
                     checked:false
                 }
+            ],
+
+            subItem: [
+
             ]
+
         };
 
         this.addNewItem = this.addNewItem.bind(this);
         this.removeItem = this.removeItem.bind(this);
         this.checkedItem = this.checkedItem.bind(this);
         this.deleteCheckedItems = this.deleteCheckedItems.bind(this);
+        this.taskEditing = this.taskEditing.bind(this);
+        this.addSubItem = this.addSubItem.bind(this);
     }
 
     idGenerator() {
@@ -74,6 +82,25 @@ class TodoApp extends Component {
             todos:[newItem, ...this.state.todos],
         });
         return newItem
+    }
+
+    addSubItem() {
+
+        const subTask = prompt();
+
+        const newSubItem = {
+            id: this.idGenerator(),
+            content: subTask,
+            checked: false,
+        }
+
+        this.setState({
+            subItem: [newSubItem, ...this.state.subItem]
+        })
+
+        console.log('Click');
+        console.log(subTask);
+        console.log(this.state.subItem);
     }
 
     removeItem(item) {
@@ -101,6 +128,18 @@ class TodoApp extends Component {
         })        
     }
 
+    taskEditing(item) {
+
+        const {todos} = this.state;
+        console.log(item);
+        const newTask = {...item, content: prompt()};
+
+        this.setState ({
+            todos: todos.map(next => next.id === newTask.id ? newTask : next)
+        })
+        console.log(newTask);
+    }
+
     render() {
 
         const {todos} = this.state;
@@ -110,21 +149,29 @@ class TodoApp extends Component {
         const checkTask = chechedCount.length;
         const noCheckTask = allTask - checkTask;
 
-        return(
+        return (
+
             <div style={styles.appContainer}>
                 <div style={styles.wrapper}>
                     <TodoHeader onNewItem = {this.addNewItem} deleteItem={this.deleteCheckedItems}/>
                     <TodoList items={this.state.todos} 
                         onDeleteItem={this.removeItem}
-                        onCheckedItem={this.checkedItem} />
+                        onCheckedItem={this.checkedItem}
+                        onTaskEditing={this.taskEditing}
+                        onAddSubItem={this.addSubItem}
+                    />
 
+                    <SubList items={this.state.subItem}/>
+                    {console.log(this.state.subItem)}
                     <div style={styles.countContainer}>
                         <p style={styles.counteItem}>All task: {allTask}</p>
                         <p style={styles.counteItem}>Completed tasks: {checkTask}</p>
                         <p style={styles.counteItem}>Outstanding tasks: {noCheckTask}</p>
                     </div>
+
                 </div>            
             </div>
+
         )
     }
 }
